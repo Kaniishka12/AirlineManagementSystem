@@ -1,12 +1,17 @@
+# Use Debian-based OpenJDK image with apt-get available
 FROM openjdk:21-jdk-slim
 
+# Set working directory inside the container
 WORKDIR /app
 
-# Copy all files, including lib folder
+# Copy all your project files to the container
 COPY . .
 
-# Install ant and run build
-RUN apt-get update && apt-get install -y ant && ant clean && ant -v
+# Install necessary tools and build with Ant
+RUN apt-get update && \
+    apt-get install -y ant && \
+    mkdir -p lib && \
+    ant clean && ant
 
-# Run the app
+# Run your Java application
 CMD ["java", "-cp", "dist/AirlineManagementSystem.jar:lib/*", "airlinemanagementsystem.Main"]
