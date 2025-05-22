@@ -5,7 +5,7 @@ FROM openjdk:21-jdk-slim
 WORKDIR /app
 
 # Copy project files into container
-COPY . .
+COPY lib lib
 
 # Install ant
 RUN apt-get update && \
