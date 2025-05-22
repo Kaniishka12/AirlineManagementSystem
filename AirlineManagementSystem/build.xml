@@ -1,30 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="AirlineManagementSystem" default="default" basedir=".">
     <description>Builds, tests, and runs the project AirlineManagementSystem.</description>
-    
-    <!-- Define a classpath including all jars in the lib folder -->
+
+    <!-- Define a classpath that includes all jars from the lib folder -->
     <path id="project.classpath">
         <fileset dir="lib" includes="*.jar"/>
     </path>
 
-    <!-- Override the macro for javac compilation to include project.classpath -->
-    <target name="-init-macrodef-javac" depends="-pre-init" >
-        <macrodef name="javac" uri="antlib:org.apache.tools.ant.taskdefs">
-            <attribute name="destdir"/>
-            <attribute name="srcdir"/>
-            <attribute name="includes" default="**/*.java"/>
-            <element name="compilerarg" optional="true"/>
-            <sequential>
-                <javac destdir="@{destdir}" srcdir="@{srcdir}" includes="@{includes}" includeantruntime="false" >
-                    <classpath refid="project.classpath"/>
-                    <compilerarg line="-Xlint:unchecked"/>
-                    <compilerarg line="-Xlint:deprecation"/>
-                    <compilerarg/>
-                </javac>
-            </sequential>
-        </macrodef>
+    <!-- Add the classpath to the compile step -->
+    <target name="-post-compile">
+        <copy todir="${build.classes.dir}">
+            <fileset dir="lib"/>
+        </copy>
     </target>
 
-    <!-- Import the rest of the build from NetBeans generated file -->
+    <!-- Hook into the default javac by setting build.compiler.classpath -->
+    <property name="javac.classpath" refid="project.classpath"/>
+
+    <!-- Import default NetBeans-generated Ant implementation -->
     <import file="nbproject/build-impl.xml"/>
 </project>
