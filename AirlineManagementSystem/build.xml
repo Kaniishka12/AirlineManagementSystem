@@ -1,29 +1,34 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project name="AirlineManagementSystem" default="default" basedir=".">
-    <description>Builds, tests, and runs the project AirlineManagementSystem.</description>
+<?xml version="1.0"?>
+<project name="AirlineManagementSystem" default="jar" basedir=".">
+    <property name="src.dir"     value="src"/>
+    <property name="build.dir"   value="build"/>
+    <property name="dist.dir"    value="dist"/>
+    <property name="main-class"  value="airlinemanagementsystem.Main"/>
+    <property name="lib.dir"     value="lib"/>
 
-    <!-- Define classpath including all jars in lib folder -->
-    <path id="project.classpath">
-        <fileset dir="lib" includes="*.jar"/>
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
     </path>
 
-    <!-- Override javac macro to include project.classpath -->
-    <target name="-init-macrodef-javac" depends="-pre-init">
-        <macrodef name="javac" uri="antlib:org.apache.tools.ant.taskdefs">
-            <attribute name="destdir"/>
-            <attribute name="srcdir"/>
-            <attribute name="includes" default="**/*.java"/>
-            <element name="compilerarg" optional="true"/>
-            <sequential>
-                <javac destdir="@{destdir}" srcdir="@{srcdir}" includes="@{includes}" includeantruntime="false">
-                    <classpath refid="project.classpath"/>
-                    <compilerarg line="-Xlint:unchecked"/>
-                    <compilerarg line="-Xlint:deprecation"/>
-                    <compilerarg/>
-                </javac>
-            </sequential>
-        </macrodef>
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
     </target>
 
-    <import file="nbproject/build-impl.xml"/>
+    <target name="compile">
+        <mkdir dir="${build.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false">
+            <classpath refid="classpath"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${dist.dir}"/>
+        <jar destfile="${dist.dir}/AirlineManagementSystem.jar" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+                <attribute name="Class-Path" value="lib/jcalendar-1.4.jar lib/rs2xml.jar"/>
+            </manifest>
+        </jar>
+    </target>
 </project>
