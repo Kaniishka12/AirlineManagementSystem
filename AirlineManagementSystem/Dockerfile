@@ -14,4 +14,5 @@ RUN apt-get update && \
     ant
 
 # Set the command to run your application
-CMD ["java", "-cp", "dist/AirlineManagementSystem.jar:lib/*", "airlinemanagementsystem.Main"]
+CMD ["java", "-cp", "dist/AirlineManagementSystem.jar", "airlinemanagementsystem.Login"]
+
